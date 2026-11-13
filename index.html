@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studia - Learning Space</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <nav class = 'sidebar'>
+        <header>
+            <div class="image-text">
+                <span class="image logo-mark" aria-label="Studia logo">S</span>
+
+                <div class="text header-text">
+                    <span class="name">Studia</span>
+                    <span class="profession">Learning Space</span>
+                </div>
+            </div>
+            <button class="toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">
+                <i class="bx bx-chevron-right" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home-alt icon' ></i>
+                             <span class="text nav-text">Home</span>
+                         </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-book icon'></i>
+                             <span class="text nav-text">My library</span>
+                         </a>
+                    </li>
+                    <li class= "mode">
+                        <div class="moon-sun">
+                                <i class="bx bx-moon" ></i>
+                                <i class="bx bx-sun" ></i>
+                        </div>
+                        <span class="mode-text text">Dark Mode</span>
+                        <div class="toggle-switch">
+                            <span class="switch"></span>
+                        </div>
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+
+
+        <!-- CONTINUTUL PRINCIPAL -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header>
+                <p class="small-title">YOUR LEARNING SPACE</p>
+
+                <h1>
+                    Turn reading into
+                    <em>understanding.</em>
+                </h1>
+
+                <p class="description">
+                    Upload your study material and transform it into
+                    a clear summary or a natural-sounding audiobook.
+                </p>
+            </header>
+
+            <!-- SECTIUNEA DE UPLOAD -->
+            <section class="upload-area">
+
+                <div class="section-header">
+                    <h2>01 Create something new</h2>
+                    <small>Your files stay private</small>
+                </div>
+
+                <div class="create-content">
+
+                    <!-- ZONA DE INCARCARE -->
+                    <div class="upload-area">
+
+                        <div class="upload-icon">↑</div>
+
+                        <h3>Drop your document here</h3>
+
+                        <p>or
+                            <label for="fileInput">browse your files</label>
+                        </p>
+
+                        <input type="file" 
+                        id="fileInput"
+                        accept=".pdf,.doc,.docx,.txt"
+                        hidden/>
+
+                        <small id="fileName">
+                            PDF, DOCX, TXT - Up to 50 MB
+                        </small>
+
+                    </div>
+
+
+                    <!-- OPTIUNILE -->
+                    <div class="create-options">
+
+                        <p>What do you want to create?</p>
+
+                        <div class="choice-buttons">
+
+                            <button class="choice-selected"
+                            onclick="selectType('Audiobook', this)">
+                                 <h4>Audiobook</h4>
+                                 <small>Listen anywhere</small>
+                            </button>
+
+                            <button class="choice"
+                            onclick="selectType('Summary', this)">
+                                 <h4>Summary</h4>
+                                 <small>Key ideas, fast</small>
+                            </button>
+
+                        </div>
+
+                        <p>Detail level</p>
+
+                        <div class="levels">
+
+                            <button onclick="selectLevel('Quick', this)">
+                                Quick
+                            </button>
+
+                            <button class="level-selected"
+                            onclick="selectLevel('Balanced', this)">
+                                Balanced
+                            </button>
+
+                            <button onclick="selectLevel('In depth', this)">
+                                In depth
+                            </button>
+
+                        </div>
+
+                        <button class="create-button" onclick="createMaterial()">
+                             Create <span id="createType">audiobook</span> →
+                        </button>
+
+                        <p id="message"></p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MATERIALE DE STUDIU -->
+            <section class="learning-section">
+
+                <div class="learning-header">
+                    <div>
+                        <span>02</span>
+                        <h3>Continue learning</h3>
+                    </div>
+
+                    <a href="#">View library ›</a>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
