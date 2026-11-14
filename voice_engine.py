@@ -10,6 +10,7 @@ VOICES = {
     "de": "de-DE-KatjaNeural",
     "es": "es-ES-ElviraNeural",
     "zh": "zh-CN-XiaoxiaoNeural",
+    "pt": "pt-PT-RaquelNeural",
     "hi": "hi-IN-SwaraNeural",
     "ja": "ja-JP-NanamiNeural",
     "it": "it-IT-ElsaNeural"
