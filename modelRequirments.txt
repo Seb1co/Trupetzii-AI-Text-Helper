@@ -1,1 +1,1 @@
-genai pandas numpy io Pillow paddleocr os cv2
+genai pandas numpy io Pillow paddleocr os cv2 groq
