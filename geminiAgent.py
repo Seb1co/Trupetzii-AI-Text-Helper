@@ -1,10 +1,10 @@
 from google import genai
-
+from groqAgent import secondChance
 
 def runModel(prompt):
     try:
         gemKey = open("gemKey1.txt","r").read().strip() + open("gemKey2.txt","r").read().strip()
-        model = "gemini-3.5-flash-lite"
+        model = "gemini-3.5-flash-lit"
         agent = genai.Client(api_key=gemKey)
         result = agent.models.generate_content(
                 model = model,
@@ -12,7 +12,10 @@ def runModel(prompt):
                 )
         return result.text
     except Exception as e:
-        print("Error: ",e)
+        try:
+            return secondChance(prompt)
+        except Exception as e:
+            print(e)
 
 
 
@@ -91,12 +94,3 @@ def testMaker(text):
     except Exception as e:
         pass
     #returneaza un dictionar de tip question : answer:valueOfTruth(True/False)
-        
-                
-
-
-           
-           
-        
-    
-
