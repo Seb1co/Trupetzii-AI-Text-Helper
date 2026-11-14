@@ -3,7 +3,7 @@ from google import genai
 
 def runModel(prompt):
     try:
-        gemKey = open("geminiKey.txt","r").read().strip()
+        gemKey = open("gemKey1.txt","r").read().strip() + open("gemKey2.txt","r").read().strip()
         model = "gemini-3.5-flash-lite"
         agent = genai.Client(api_key=gemKey)
         result = agent.models.generate_content(
