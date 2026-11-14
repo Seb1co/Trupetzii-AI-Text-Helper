@@ -4,15 +4,15 @@ from google import genai
 def runModel(prompt):
     try:
         gemKey = open("geminiKey.txt","r").read().strip()
-        model = "gemini-3.8-flash"
+        model = "gemini-3.5-flash-lite"
         agent = genai.Client(api_key=gemKey)
         result = agent.models.generate_content(
                 model = model,
                 contents = prompt
                 )
-        return result
+        return result.text
     except Exception as e:
-        pass
+        print("Error: ",e)
 
 
 
@@ -45,20 +45,20 @@ def testMaker(text):
     b) Second answer
     c) Third answer
     d) Forth answer
-    
     2. Second question
     a) First answer
     b) Second answer
     c) Third answer 
     d) Forth answer
     ...
-    
+    DO NOT LEAVE AN EMPTY LINE BETWEEN QUESTIONS.
     Place a value of truth next to each question, for example:
     a) First answer (True)
     b) Second answer (False)
     c) Third answer (False)
     d) Forth answer (False)
     Only one answer can be true. The true answer should have a random position(either a,b,c,d).
+    Make sure to follow the exact format, the value of truth should be in parethesis: ()
 
     Respond with only the test you made based on the text, NOTHING ELSE. 
     The text on which the test has to be based on is:
@@ -66,28 +66,31 @@ def testMaker(text):
     """
 
     testString = runModel(c)
-    testLines = text.splitlines()
-    test = {}
-    for i in range(len(testLines)):
-        if(i%5==0):
-            question = testLines[i]
-            answers = {}
-        else:
-            split = testLines[i].split("(", 1)
-            answer = split[0]
-
-            if(split[1].replace(")","") == "True"):
-                valueOfTruth = True
+    try:
+        testLines = testString.splitlines()
+        test = {}
+        for i in range(len(testLines)):
+            print(testLines[i])
+            if(i%5==0):
+                question = testLines[i]
+                answers = {}
             else:
-                valueOfTruth = False
-            
-            answers[answer] = valueOfTruth
-            
-            if(i%5==4):
-                test[question] = answers
+                split = testLines[i].split("(", 1)
+                answer = split[0]
 
+                if(split[1].replace(")","") == "True"):
+                    valueOfTruth = True
+                else:
+                    valueOfTruth = False
+                
+                answers[answer] = valueOfTruth
+                
+                if(i%5==4):
+                    test[question] = answers
+        return test
+    except Exception as e:
+        pass
     #returneaza un dictionar de tip question : answer:valueOfTruth(True/False)
-    return test
         
                 
 
