@@ -1,20 +1,14 @@
 const fileInput = document.getElementById('fileInput');
 const fileName = document.getElementById('fileName');
+const materialName = document.getElementById('materialName');
 const createType = document.getElementById('createType');
 const message = document.getElementById('message');
-const sidebar = document.querySelector('.sidebar');
-const sidebarToggle = document.querySelector('.sidebar .toggle');
+const uploadArea = document.querySelector('.upload-area');
+
 
 let selectedType = 'Audiobook';
-let selectedLevel = 'Balanced';
-
-if (sidebar && sidebarToggle) {
-    sidebarToggle.addEventListener('click', function () {
-        const isCollapsed = sidebar.classList.toggle('close');
-        sidebarToggle.setAttribute('aria-expanded', String(!isCollapsed));
-        sidebarToggle.setAttribute('aria-label', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
-    });
-}
+let selectedLevel = 'Shorter';
+let selectedFile = null;
 
 function selectType(type, button) {
     selectedType = type;
@@ -45,20 +39,90 @@ function selectLevel(level, button) {
 }
 
 function createMaterial() {
-    const chosenFile = fileInput && fileInput.files && fileInput.files[0];
+    const chosenFile = selectedFile || (fileInput && fileInput.files && fileInput.files[0]);
     const fileLabel = chosenFile ? chosenFile.name : 'your selected file';
-    const summaryText = `Creating ${selectedType.toLowerCase()} with ${selectedLevel.toLowerCase()} detail for ${fileLabel}.`;
+    const enteredTitle = materialName ? materialName.value.trim() : '';
+
+    if (!enteredTitle) {
+        if (message) {
+            message.textContent = 'Please enter a name for your material.';
+        }
+        if (materialName) {
+            materialName.focus();
+        }
+        return;
+    }
+
+    const item = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        type: selectedType,
+        title: enteredTitle,
+        level: selectedLevel,
+        fileName: fileLabel,
+        createdAt: new Date().toISOString()
+    };
+
+    const library = JSON.parse(localStorage.getItem('studia-library') || '[]');
+    library.unshift(item);
+    localStorage.setItem('studia-library', JSON.stringify(library));
 
     if (message) {
-        message.textContent = summaryText;
+        message.textContent =
+            `Created ${selectedType.toLowerCase()} with ${selectedLevel.toLowerCase()} detail for ${fileLabel}.`;
     }
 }
 
-if (fileInput && fileName) {
-    fileInput.addEventListener('change', function () {
-        if (this.files.length > 0) {
-            fileName.textContent = this.files[0].name;
+function handleFile(file) {
+    if (!file || !fileInput || !fileName) {
+        return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+        fileInput.value = '';
+        selectedFile = null;
+        fileName.textContent = 'Image files only - PNG, JPG, WEBP';
+        if (message) {
+            message.textContent = 'Please choose an image file.';
         }
+        return;
+    }
+
+    selectedFile = file;
+    fileName.textContent = file.name;
+    if (message) {
+        message.textContent = '';
+    }
+}
+
+if (fileInput) {
+    fileInput.addEventListener('change', function () {
+        handleFile(this.files && this.files[0]);
     });
 }
+
+if (uploadArea) {
+    uploadArea.addEventListener('dragover', function (event) {
+        event.preventDefault();
+        uploadArea.classList.add('is-dragging');
+    });
+
+    uploadArea.addEventListener('dragleave', function (event) {
+        if (!uploadArea.contains(event.relatedTarget)) {
+            uploadArea.classList.remove('is-dragging');
+        }
+    });
+
+    uploadArea.addEventListener('drop', function (event) {
+        event.preventDefault();
+        uploadArea.classList.remove('is-dragging');
+        const droppedFile = event.dataTransfer.files[0];
+
+        if (!droppedFile || !fileInput) {
+            return;
+        }
+
+        handleFile(droppedFile);
+    });
+}
+
 
