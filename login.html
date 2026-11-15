@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Login - Studia</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <title>Document</title>
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <div class="wrapper">
+        <form id="loginForm" action="">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" name="username" placeholder="Username" autocomplete="username" required>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+            </div>
+            <div class="remember">
+                <label><input type="checkbox" name="remember"> Remember me</label>
+            </div>
+
+            <p id="loginMessage" class="login-message" role="status" aria-live="polite"></p>
+            <button type = "submit" class = "button"> Login</button>
+        </form>
+    </div>
+    
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barrio&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+/*==== Colors ====*/
+    --body-color: #E4E9F7;
+    --background-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --text-color: #24243a;
+    --primary-color: #695CFE;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --toggle-knob-color: #FFF;
+
+/*==== Transition ====*/
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #695CFE, #92b6ff);
+}
+
+.wrapper{
+    background: var(--sidebar-color);
+    width: 420px;
+    color: var(--primary-color-light);
+    border-radius: 10px;
+    padding: 30px 40px;
+    animation: appear 600ms ease-in;
+}
+
+@keyframes appear{
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.wrapper h1{
+    font-size: 32px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.wrapper .input-box{
+    width: 100%;
+    height: 70px;
+    padding: 10px;
+}
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid var(--text-color);
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 10px 25px 10px 10px;
+
+}
+
+.input-box input::placeholder{
+    color: var(--text-color);
+}
+
+.input-box i{
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.wrapper .remember{
+    display: flex;
+    font-size: 14px;
+    color: var(--text-color);
+    padding: 7px;
+}
+
+.login-message {
+    min-height: 1.4em;
+    color: #b42318;
+    font-size: 13px;
+    text-align: center;
+}
+
+.wrapper button{
+    width: 100%;
+    height: 45px;
+    background: var(--primary-color-light);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+</style>
+
+</body>
+</html>

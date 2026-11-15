@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studia - Learning Space</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="auth.js" defer></script>
+
+</head>
+<body>
+
+    <nav class = 'sidebar'>
+        <header>
+            <div class="image-text">
+                <span class="image logo-mark" aria-label="Studia logo">S</span>
+
+                <div class="text header-text">
+                    <span class="name">Studia</span>
+                    <span class="profession">Learning Space</span>
+                </div>
+            </div>
+            <button class="toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">
+                <i class="bx bx-chevron-right" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home-alt icon' ></i>
+                             <span class="text nav-text">Home</span>
+                         </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="library.html">
+                            <i class="bx bx-book icon" aria-hidden="true"></i>
+                            <span class="text nav-text">My Library</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="login.html" data-logout>
+                            <i class="bx bx-log-out icon" aria-hidden="true"></i>
+                            <span class="text nav-text">Log out</span>
+                        </a>
+                    </li>
+                    <li class= "mode">
+                        <div class="moon-sun" aria-hidden="true">
+                                <i class="bx bx-moon moon"></i>
+                                <i class="bx bx-sun sun"></i>
+                        </div>
+                        <span class="mode-text text">Light Mode</span>
+                        <button class="toggle-switch" type="button" aria-label="Switch to light mode" aria-pressed="false">
+                            <span class="switch"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+
+
+        <!-- CONTINUTUL PRINCIPAL -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header>
+                <p class="small-title">YOUR LEARNING SPACE</p>
+
+                <h1>
+                    Turn reading into
+                    <em>understanding.</em>
+                </h1>
+
+                <p class="description">
+                    Upload your study material and transform it into
+                    a clear summary or a natural-sounding audiobook.
+                </p>
+            </header>
+
+            <!-- SECTIUNEA DE UPLOAD -->
+            <section class="create-section">
+
+                <div class="section-header">
+                    <h2>Create something new</h2>
+                    <small>Your files stay private</small>
+                </div>
+
+                <div class="create-content">
+
+                    <!-- ZONA DE INCARCARE -->
+                    <div class="upload-area">
+
+                        <div class="upload-icon">↑</div>
+
+                        <h3>Drop your document here</h3>
+
+                        <p>or
+                            <label for="fileInput">browse your files</label>
+                        </p>
+
+                        <input type="file" 
+                        id="fileInput"
+                        accept="image/*"
+                        multiple>
+
+                        <small id="fileName">
+                            Image files only - PNG, JPG, WEBP
+                        </small>
+
+                    </div>
+
+
+                    <!-- OPTIUNILE -->
+                    <div class="create-options">
+
+                        <p>What do you want to create?</p>
+
+                        <div class="choice-buttons">
+
+                            <button class="choice-selected"
+                            onclick="selectType('Audiobook', this)">
+                                 <h4>Audiobook</h4>
+                                 <small>Listen anywhere</small>
+                            </button>
+
+                            <button class="choice"
+                            onclick="selectType('Summary', this)">
+                                 <h4>Summary</h4>
+                                 <small>Key ideas, fast</small>
+                            </button>
+
+                        </div>
+
+                        <p>Name</p>
+
+                        <div class="input-box">
+                            <input type="text" id="materialName" name="file name" placeholder="file name" autocomplete="name" required>
+                        </div>
+
+                        <p>Detail level</p>
+
+                        <div class="levels">
+
+                            <button class="level-selected" onclick="selectLevel('Shorter', this)">
+                                Shorter
+                            </button>
+
+                            <button onclick="selectLevel('Longer', this)">
+                                Longer
+                            </button>
+
+
+                        </div>
+
+                        <button class="create-button" onclick="createMaterial()">
+                             Create <span id="createType">audiobook</span> →
+                        </button>
+
+                        <p id="message"></p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MATERIALE DE STUDIU -->
+            <section class="learning-section">
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="sidebar.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

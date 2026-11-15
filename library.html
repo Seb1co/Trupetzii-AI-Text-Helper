@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Library - Studia</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="auth.js" defer></script>
+    <style>
+        .library-page {
+            min-height: 100vh;
+            margin-left: 250px;
+            padding: 42px clamp(20px, 5vw, 64px);
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar.close ~ .library-page {
+             margin-left: 78px; 
+            }
+        .library-header, #libraryItems { 
+            width: min(100%, 1050px);
+             margin: 0 auto; 
+            }
+        .library-header { 
+            margin-bottom: 28px; 
+        }
+        .library-header h1 { 
+            margin: 12px 0 4px;
+         }
+        .library-back { 
+            color: var(--primary-color);
+             text-decoration: none; 
+            
+            }
+
+        #libraryItems {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .library-card {
+            min-height: 180px;
+            padding: 20px;
+            border: 1px solid var(--body-color);
+            border-radius: 12px;
+            background: var(--primary-color-light);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .library-card:hover,
+        .library-card:focus-visible {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 24px rgba(40, 35, 90, 0.14);
+        }
+
+        .library-card.is-summary { 
+            cursor: pointer; 
+        }
+        .library-listen {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            background: var(--primary-color);
+            color: #fff;
+            font: inherit;
+            cursor: pointer;
+        }
+        .library-listen:disabled {
+            cursor: wait;
+            opacity: 0.7;
+        }
+        .library-audio {
+            display: block;
+            width: 100%;
+            min-width: 0;
+        }
+        .library-card:focus-visible { 
+            outline: 3px solid var(--primary-color); 
+            outline-offset: 3px; 
+        }
+
+        .library-card-heading { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px; 
+        }
+        .library-icon {
+            flex: 0 0 42px;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: var(--body-color);
+            color: var(--primary-color);
+            font-size: 23px;
+        }
+
+        .library-card h2 { 
+            font-size: 17px; 
+            line-height: 1.4; 
+            overflow-wrap: anywhere;
+         }
+        .library-card p, .library-card small {
+             color: var(--text-color);
+             }
+        .library-card small { 
+            margin-top: auto;
+             opacity: 0.75; 
+            }
+        .library-empty {
+            grid-column: 1 / -1;
+            padding: 24px;
+            border-radius: 12px;
+            background: var(--primary-color-light);
+        }
+        .library-error {
+            grid-column: 1 / -1;
+            padding: 16px 0;
+            color: #b42318;
+        }
+
+        @media (max-width: 1000px) {
+            #libraryItems { 
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+             }
+        }
+
+        @media (max-width: 700px) {
+            .library-page {
+                 padding: 32px 16px;
+                 }
+            .sidebar.close ~ .library-page { 
+                margin-left: 78px;
+             }
+            #libraryItems { 
+                grid-template-columns: 1fr; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <header>
+            <div class="image-text">
+                <span class="image logo-mark" aria-label="Studia logo">S</span>
+                <div class="text header-text">
+                    <span class="name">Studia</span>
+                    <span class="profession">Learning Space</span>
+                </div>
+            </div>
+            <button class="toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">
+                <i class="bx bx-chevron-right" aria-hidden="true"></i>
+            </button>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link"><a href="index.html">
+                        <i class="bx bx-home-alt icon" aria-hidden="true"></i>
+                        <span class="text nav-text">Home</span>
+                    </a>
+                </li>
+                    <li class="nav-link"><a href="library.html" aria-current="page">
+                        <i class="bx bx-book icon" aria-hidden="true"></i>
+                        <span class="text nav-text">My Library</span>
+                    </a>
+                </li>
+                    <li class="nav-link">
+                        <a href="login.html" data-logout>
+                            <i class="bx bx-log-out icon" aria-hidden="true"></i>
+                            <span class="text nav-text">Log out</span>
+                        </a>
+                    </li>
+                    <li class="mode">
+                        <div class="moon-sun" aria-hidden="true">
+                            <i class="bx bx-moon moon"></i>
+                            <i class="bx bx-sun sun"></i>
+                        </div>
+                        <span class="mode-text text">Dark Mode</span>
+                        <button class="toggle-switch" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                            <span class="switch"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="library-page">
+        <header class="library-header">
+            <h1>My Library</h1>
+            <p>Your summaries and audiobooks will appear here.</p>
+        </header>
+        <section id="libraryItems" aria-live="polite"></section>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script src="library.js" defer></script>
+</body>
+</html>
+
