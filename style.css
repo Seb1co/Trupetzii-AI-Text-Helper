@@ -443,6 +443,10 @@ body.dark .toggle-switch .switch::before{
     text-align: center;
 }
 
+.upload-area input[type="file"] {
+    display: none;
+}
+
 .upload-area.is-dragging {
     outline: 2px dashed var(--primary-color);
     outline-offset: -8px;
@@ -486,6 +490,7 @@ body.dark .toggle-switch .switch::before{
 .upload-area small{
     font-size: 9px;
     color: #aaa;
+    white-space: pre-line;
 }
 
 

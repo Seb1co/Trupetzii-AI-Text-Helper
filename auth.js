@@ -1,4 +1,5 @@
-(function () {
+(
+    function () {
     const usernameKey = 'studia-user';
     const page = window.location.pathname.split('/').pop() || 'index.html';
 
@@ -19,24 +20,64 @@
 
         const loginForm = document.getElementById('loginForm');
         if (loginForm) {
-            loginForm.addEventListener('submit', function (event) {
+            loginForm.addEventListener('submit', async function (event) {
                 event.preventDefault();
 
                 const username = loginForm.elements.username.value.trim();
+                const password = loginForm.elements.password.value;
                 const rememberUser = loginForm.elements.remember.checked;
-                clearCurrentUser();
-                (rememberUser ? localStorage : sessionStorage).setItem(usernameKey, username);
-                window.location.replace('index.html');
+                const loginMessage = document.getElementById('loginMessage');
+                const submitButton = loginForm.querySelector('button[type="submit"]');
+
+                if (loginMessage) {
+                    loginMessage.textContent = '';
+                }
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/log_in', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const result = await response.json();
+
+                    if (!response.ok || result.status !== 'success') {
+                        if (loginMessage) {
+                            loginMessage.textContent = result.message || 'Invalid username or password.';
+                        }
+                        return;
+                    }
+
+                    clearCurrentUser();
+                    (rememberUser ? localStorage : sessionStorage).setItem(usernameKey, username);
+                    window.location.replace('index.html');
+                } catch (error) {
+                    console.error('Login request failed:', error);
+                    if (loginMessage) {
+                        loginMessage.textContent = 'Could not connect to the server. Please try again.';
+                    }
+                } finally {
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                    }
+                }
             });
         }
         return;
     }
 
     const username = getCurrentUser();
+    window.username = username;
+    console.log(username);
+    
     if (!username) {
         window.location.replace('login.html');
         return;
     }
+
 
     const profileName = document.querySelector('.profession');
     if (profileName) {

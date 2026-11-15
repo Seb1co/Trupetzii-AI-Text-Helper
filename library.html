@@ -60,9 +60,30 @@
             box-shadow: 0 10px 24px rgba(40, 35, 90, 0.14);
         }
 
-        .library-card.is-audiobook,
         .library-card.is-summary { 
             cursor: pointer; 
+        }
+        .library-listen {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            background: var(--primary-color);
+            color: #fff;
+            font: inherit;
+            cursor: pointer;
+        }
+        .library-listen:disabled {
+            cursor: wait;
+            opacity: 0.7;
+        }
+        .library-audio {
+            display: block;
+            width: 100%;
+            min-width: 0;
         }
         .library-card:focus-visible { 
             outline: 3px solid var(--primary-color); 
@@ -103,6 +124,11 @@
             padding: 24px;
             border-radius: 12px;
             background: var(--primary-color-light);
+        }
+        .library-error {
+            grid-column: 1 / -1;
+            padding: 16px 0;
+            color: #b42318;
         }
 
         @media (max-width: 1000px) {
@@ -151,11 +177,6 @@
                         <span class="text nav-text">My Library</span>
                     </a>
                 </li>
-                    <li class="nav-link"><a href="audio.html">
-                        <i class="bx bx-headphone icon" aria-hidden="true"></i>
-                        <span class="text nav-text">Audio Session</span>
-                    </a>
-                </li>
                     <li class="nav-link">
                         <a href="login.html" data-logout>
                             <i class="bx bx-log-out icon" aria-hidden="true"></i>
@@ -186,98 +207,7 @@
     </main>
 
     <script src="sidebar.js"></script>
-    <script>
-        const libraryItems = document.getElementById('libraryItems');
-        let savedItems = [];
-
-        try {
-            savedItems = JSON.parse(localStorage.getItem('studia-library') || '[]');
-            if (!Array.isArray(savedItems)) savedItems = [];
-        } catch {
-            savedItems = [];
-        }
-
-        if (savedItems.length === 0) {
-            const emptyMessage = document.createElement('p');
-            emptyMessage.className = 'library-empty';
-            emptyMessage.textContent = 'Your library is empty. Create a summary or audiobook to see it here.';
-            libraryItems.appendChild(emptyMessage);
-        } else {
-            for (const item of savedItems) {
-                const itemType = (item.type || '').toLowerCase();
-                const isAudiobook = itemType === 'audiobook';
-                const isSummary = itemType === 'summary';
-                const card = document.createElement('article');
-                card.className = `library-card${isAudiobook ? ' is-audiobook' : ''}${isSummary ? ' is-summary' : ''}`;
-
-                const heading = document.createElement('div');
-                heading.className = 'library-card-heading';
-
-                const icon = document.createElement('i');
-                icon.className = `bx ${isAudiobook ? 'bx-headphone' : 'bx-book'} library-icon`;
-                icon.setAttribute('aria-hidden', 'true');
-
-                const title = document.createElement('h2');
-                title.textContent = item.title || (item.fileName
-                    ? item.fileName.replace(/\.[^.]+$/, '')
-                    : item.type || 'Study material');
-                heading.append(icon, title);
-
-                if (localStorage.getItem("theme") === "dark") {
-                    document.body.classList.add("dark");
-                }
-
-
-                if (isAudiobook) {
-                    const selectionKey = String(item.id || item.fileName || '');
-                    card.setAttribute('role', 'link');
-                    card.setAttribute('tabindex', '0');
-                    card.setAttribute('aria-label', `Open audiobook ${title.textContent} in Audio Session`);
-
-                    const openAudioSession = () => {
-                        localStorage.setItem('studia-selected-audiobook', selectionKey);
-                        window.location.href = 'audio.html';
-                    };
-
-                    card.addEventListener('click', openAudioSession);
-                    card.addEventListener('keydown', event => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                            event.preventDefault();
-                            openAudioSession();
-                        }
-                    });
-                } else if (isSummary) {
-                    card.setAttribute('role', 'link');
-                    card.setAttribute('tabindex', '0');
-                    card.setAttribute('aria-label', `Open summary ${title.textContent}`);
-
-                    const openSummary = () => {
-                        localStorage.setItem('studia-selected-summary', JSON.stringify(item));
-                        window.location.href = 'summary.html';
-                    };
-
-                    card.addEventListener('click', openSummary);
-                    card.addEventListener('keydown', event => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                            event.preventDefault();
-                            openSummary();
-                        }
-                    });
-                }
-
-                const details = document.createElement('p');
-                const detailLevel = !item.level || item.level === 'Balanced' ? 'Shorter' : item.level;
-                details.textContent = `${item.type || 'Study material'} · ${detailLevel} detail`;
-
-                const created = document.createElement('small');
-                const date = new Date(item.createdAt);
-                created.textContent = Number.isNaN(date.getTime()) ? '' : `Created ${date.toLocaleString()}`;
-
-                card.append(heading, details, created);
-                libraryItems.appendChild(card);
-            }
-        }
-    </script>
+    <script src="library.js" defer></script>
 </body>
 </html>
 

@@ -13,7 +13,7 @@
         }
 
         if (modeText) {
-            modeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+            modeText.textContent = isDark ? 'Dark Mode' : 'Light Mode';
         }
     }
 

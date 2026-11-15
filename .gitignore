@@ -1,0 +1,26 @@
+# Python environments and cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Node dependencies
+node_modules/
+
+# IDE metadata
+**/.idea/
+
+# Local configuration and API keys
+.env
+.env.*
+!.env.example
+**/*Key*.txt
+
+# Local database and generated user files
+*.db
+*.db-shm
+*.db-wal
+backend/server/Files/
+backend/server/Logs/

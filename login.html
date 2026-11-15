@@ -23,6 +23,7 @@
                 <label><input type="checkbox" name="remember"> Remember me</label>
             </div>
 
+            <p id="loginMessage" class="login-message" role="status" aria-live="polite"></p>
             <button type = "submit" class = "button"> Login</button>
         </form>
     </div>
@@ -125,6 +126,13 @@ body{
     font-size: 14px;
     color: var(--text-color);
     padding: 7px;
+}
+
+.login-message {
+    min-height: 1.4em;
+    color: #b42318;
+    font-size: 13px;
+    text-align: center;
 }
 
 .wrapper button{
