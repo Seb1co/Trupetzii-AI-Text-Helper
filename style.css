@@ -453,6 +453,12 @@ body.dark .toggle-switch .switch::before{
     background: var(--body-color);
 }
 
+.upload-area.is-processing {
+    opacity: 0.55;
+    pointer-events: none;
+    cursor: wait;
+}
+
 .upload-area [hidden] {
     display: none !important;
 }
@@ -594,6 +600,10 @@ body.dark .toggle-switch .switch::before{
 
 }
 
+.create-options .input-box {
+    margin-bottom: 14px;
+}
+
 .input-box input::placeholder{
     color: var(--text-color);
 }
@@ -604,38 +614,6 @@ body.dark .toggle-switch .switch::before{
     top: 50px;
     transform: translateY(-50%);
     font-size: 20px;
-}
-
-.levels{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    background: #f0edfc;
-    padding: 4px;
-    border-radius: 9px;
-    margin-bottom: 16px;
-}
-
-.levels button{
-    background: transparent;
-    border:none;
-    border-radius: 7px;
-    padding: 10px 3px;
-    font-size: 11px;
-    color: #888;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.levels button:hover{
-    background: #e2def5;
-    color:#7568c5;
-}
-
-.levels button.level-selected{
-    background: white;
-    color: #333;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
 .create-button{
@@ -661,6 +639,31 @@ body.dark .toggle-switch .switch::before{
     background: #d6d3e4;
     color: #333;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+}
+
+.create-button:disabled,
+.choice-buttons button:disabled,
+.input-box input:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.create-spinner {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: create-spin 0.7s linear infinite;
+}
+
+.create-spinner[hidden] {
+    display: none;
+}
+
+@keyframes create-spin {
+    to { transform: rotate(360deg); }
 }
 
 body.dark .upload-area{
@@ -690,8 +693,7 @@ body.dark .create-options{
 }
 
 body.dark .choice-selected,
-body.dark .choice,
-body.dark .levels{
+body.dark .choice{
     background: #2C3040;
     border-color: #454B5D;
 }
@@ -700,16 +702,6 @@ body.dark .choice-selected {
     background: #383352;
     border-color: #9184ff;
     box-shadow: 0 0 0 1px rgba(145, 132, 255, 0.25);
-}
-
-body.dark .levels button{
-    color: #C0C4D0;
-}
-
-body.dark .levels button:hover,
-body.dark .levels button.level-selected{
-    background: #41475B;
-    color: #FFF;
 }
 
 body.dark .create-button:hover{

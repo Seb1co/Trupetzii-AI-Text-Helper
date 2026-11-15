@@ -146,26 +146,12 @@
                             <input type="text" id="materialName" name="file name" placeholder="file name" autocomplete="name" required>
                         </div>
 
-                        <p>Detail level</p>
-
-                        <div class="levels">
-
-                            <button class="level-selected" onclick="selectLevel('Shorter', this)">
-                                Shorter
-                            </button>
-
-                            <button onclick="selectLevel('Longer', this)">
-                                Longer
-                            </button>
-
-
-                        </div>
-
-                        <button class="create-button" onclick="createMaterial()">
+                        <button class="create-button" type="button" onclick="createMaterial()">
+                            <span id="createSpinner" class="create-spinner" aria-hidden="true" hidden></span>
                              Create <span id="createType">audiobook</span> →
                         </button>
 
-                        <p id="message"></p>
+                        <p id="message" role="status" aria-live="polite"></p>
 
                     </div>
 

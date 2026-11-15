@@ -4,12 +4,45 @@ const materialName = document.getElementById('materialName');
 const createType = document.getElementById('createType');
 const message = document.getElementById('message');
 const uploadArea = document.querySelector('.upload-area');
+const createButton = document.querySelector('.create-button');
+const createSpinner = document.getElementById('createSpinner');
 
 
 let selectedType = 'Audiobook';
-let selectedLevel = 'Shorter';
 let selectedFiles = [];
+let isProcessing = false;
 const API_BASE_URL = 'http://127.0.0.1:8000';
+
+function setProcessing(processing) {
+    isProcessing = processing;
+
+    if (fileInput) {
+        fileInput.disabled = processing;
+    }
+    if (materialName) {
+        materialName.disabled = processing;
+    }
+    if (createButton) {
+        createButton.disabled = processing;
+        createButton.setAttribute('aria-busy', String(processing));
+    }
+    if (createSpinner) {
+        createSpinner.hidden = !processing;
+    }
+
+    document.querySelectorAll('.choice-buttons button').forEach((button) => {
+        button.disabled = processing;
+    });
+
+    if (uploadArea) {
+        uploadArea.classList.toggle('is-processing', processing);
+        uploadArea.setAttribute('aria-busy', String(processing));
+    }
+    const createContent = document.querySelector('.create-content');
+    if (createContent) {
+        createContent.setAttribute('aria-busy', String(processing));
+    }
+}
 
 async function preparePhotos(files) {
     return Promise.all(Array.from(files || []).map((file) => new Promise((resolve, reject) => {
@@ -99,6 +132,7 @@ async function getAudio(username, name) {
 }
 
 function selectType(type, button) {
+    if (isProcessing) return;
     selectedType = type;
     document.querySelectorAll('.choice-buttons button').forEach((choiceButton) => {
         choiceButton.classList.remove('choice-selected');
@@ -115,18 +149,9 @@ function selectType(type, button) {
     }
 }
 
-function selectLevel(level, button) {
-    selectedLevel = level;
-    document.querySelectorAll('.levels button').forEach((levelButton) => {
-        levelButton.classList.remove('level-selected');
-    });
-
-    if (button) {
-        button.classList.add('level-selected');
-    }
-}
-
 async function createMaterial() {
+    if (isProcessing) return;
+
     const fileNames = selectedFiles.map((file) => file.name);
     const fileLabel = fileNames.length ? fileNames.join(', ') : 'your selected file';
     const enteredTitle = materialName ? materialName.value.trim() : '';
@@ -155,6 +180,11 @@ async function createMaterial() {
         return;
     }
 
+    setProcessing(true);
+    if (message) {
+        message.textContent = 'Processing images and creating your material...';
+    }
+
     try {
         const result = selectedType === 'Audiobook'
             ? await generateAudio(window.username, enteredTitle)
@@ -176,7 +206,6 @@ async function createMaterial() {
             id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
             type: selectedType,
             title: enteredTitle,
-            level: selectedLevel,
             fileName: fileLabel,
             fileNames,
             summaryText,
@@ -189,17 +218,20 @@ async function createMaterial() {
 
         if (message) {
             message.textContent = result.message ||
-                `Created ${selectedType.toLowerCase()} with ${selectedLevel.toLowerCase()} detail for ${fileLabel}.`;
+                `Created ${selectedType.toLowerCase()} for ${fileLabel}.`;
         }
     } catch (error) {
         console.error('Could not create material:', error);
         if (message) {
             message.textContent = 'Could not connect to the server. Make sure the backend is running.';
         }
+    } finally {
+        setProcessing(false);
     }
 }
 
 function handleFiles(files) {
+    if (isProcessing) return;
     const incomingFiles = Array.from(files || []);
     const imageFiles = incomingFiles.filter((file) => file.type.startsWith('image/'));
     const rejectedCount = incomingFiles.length - imageFiles.length;
@@ -221,6 +253,7 @@ function handleFiles(files) {
 
 if (fileInput) {
     fileInput.addEventListener('change', function () {
+        if (isProcessing) return;
         handleFiles(this.files);
         // Allow the same image to be selected again later if needed.
         this.value = '';
@@ -230,6 +263,7 @@ if (fileInput) {
 if (uploadArea) {
     uploadArea.addEventListener('dragover', function (event) {
         event.preventDefault();
+        if (isProcessing) return;
         uploadArea.classList.add('is-dragging');
     });
 
@@ -242,6 +276,7 @@ if (uploadArea) {
     uploadArea.addEventListener('drop', function (event) {
         event.preventDefault();
         uploadArea.classList.remove('is-dragging');
+        if (isProcessing) return;
         if (!event.dataTransfer.files.length || !fileInput) {
             return;
         }
