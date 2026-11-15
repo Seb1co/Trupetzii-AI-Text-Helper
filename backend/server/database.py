@@ -37,7 +37,15 @@ class DataBase :
         cursor = self.connection.cursor()
         cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
         row = cursor.fetchone()
-        stored_password = row[0] if row else None
+        if row is None:
+            cursor.execute(
+                "INSERT INTO users (username, password, files) VALUES (?, ?, ?)",
+                (username, encryption.encrypt(password), "")
+            )
+            self.connection.commit()
+            return True
+
+        stored_password = row[0]
         return isinstance(stored_password, str) and hmac.compare_digest(
             stored_password,
             encryption.encrypt(password)
