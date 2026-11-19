@@ -28,7 +28,8 @@ def correctText(text):
     or even characters replaced with other characters. 
     Correct the text and respond with only the corrected version, NOTHING ELSE.
     The text is:
-    {text}"""
+    {text};
+    Please write in the same language as the text."""
 
     corrected = runModel(c)
     return corrected if isinstance(corrected, str) else text
@@ -37,7 +38,8 @@ def summarizeText(text):
     c = f"""You will be given a text. Summarize it's content(make it shorter in length and easier to understand).
     Respond with only the summarized version, NOTHING ELSE.
     The text is: 
-    {text}"""
+    {text};
+    Please write in the same language as the text."""
 
     summarized = runModel(c)
     return summarized

@@ -8,7 +8,7 @@ import base64
 from text_converter.textRecog import imgRec
 from audio_converter.text_speech import voice_converter
 from database import DataBase
-from text_converter.geminiAgent import correctText
+from text_converter.geminiAgent import correctText,summarizeText
 
 BASE_DIR = Path(__file__).resolve().parent
 FILES_DIR = BASE_DIR / "Files"
@@ -94,7 +94,7 @@ async def generate_text(date : GeneratePhotosMessage):
         texts = ""
         for image in date.photos:
             image_data = base64.b64decode(image.image_bytes)
-            texts += correctText(imgRec(image_data))
+            texts += summarizeText(correctText(imgRec(image_data)))
         with text_path.open('w', encoding='utf-8') as writer:
             writer.write(texts)
             db = DataBase()
@@ -112,7 +112,6 @@ async def generate_text(date : GeneratePhotosMessage):
 
 @app.post('/generate_audio')
 async def generate_audio(date: GeneratePhotosMessage):
-    print('am intrat')
     audio_path = _material_path(date.username, date.file_name, ".mp3", create_user=True)
     text_path = _material_path(date.username, date.file_name, ".txt")
     if not audio_path.exists():
@@ -120,7 +119,7 @@ async def generate_audio(date: GeneratePhotosMessage):
             texts = ""
             for image in date.photos:
                 image_data = base64.b64decode(image.image_bytes)
-                texts += correctText(imgRec(image_data))
+                texts += summarizeText(correctText(imgRec(image_data)))
             with audio_path.open('wb') as writer:
                 writer.write(await voice_converter(texts))
         else:
@@ -128,7 +127,6 @@ async def generate_audio(date: GeneratePhotosMessage):
                 file_text = reader.read()
             with audio_path.open('wb') as writer:
                 writer.write(await voice_converter(file_text))
-        print("am scris")
         return{
             "status" : "success",
             "message": f"The file {date.file_name}.mp3 was successfully saved"
